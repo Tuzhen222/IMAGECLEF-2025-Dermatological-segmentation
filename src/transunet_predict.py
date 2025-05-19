@@ -219,35 +219,6 @@ def main_predict():
 
     predict_all(model, loader, device, save_dir='TransUnet_R50-ViT-B_16')
 
-def evaluate_scores():
-    """Run segmentation scoring and print JSON results."""
-    # Install scoring deps
-    subprocess.run(['pip', 'install', 'imagecodecs', 'gdown'], check=True)
-    eval_dir = os.path.join('ImageCLEF-MAGIC-2025', 'evaluation')
-    if not os.path.isdir(eval_dir):
-        print(f"[Error] Evaluation folder not found: {eval_dir}")
-        return
-
-    labels_dir = "/kaggle/input/datasetimageclef-augmentation-final/labels_test"
-    results_dir = "/kaggle/working/swin_unet_result"
-    out_dir = "/kaggle/working"
-
-    cmd = [
-        sys.executable, "score_segmentations.py",
-        labels_dir, results_dir, out_dir, "sys"
-    ]
-    print(f"Running scoring: {' '.join(cmd)}")
-    subprocess.run(cmd, cwd=eval_dir, check=True)
-
-    scores_file = os.path.join(out_dir, "scores_segmentation.json")
-    if os.path.exists(scores_file):
-        with open(scores_file, "r") as f:
-            data = json.load(f)
-        print(json.dumps(data, indent=4, ensure_ascii=False))
-    else:
-        print(f"[Error] Scores file not found: {scores_file}")
-
 if __name__ == "__main__":
     setup_environment()
     main_predict()
-    evaluate_scores()
