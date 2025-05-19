@@ -1,0 +1,1 @@
+# IMAGECLEF-MEDIQA-MAGIC-2025-Dermatological-segmentation
