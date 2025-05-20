@@ -64,8 +64,8 @@ Organize your dataset with the following structure:
 dataset/
   ├── images_train/
   │    ├── AdditiveNoise/             # Augmentation folder 1
-  │    │    ├── image1.jpg/jpeg/png
-  │    │    ├── image2.jpg/jpeg/png
+  │    │    ├── image1.jpgs
+  │    │    ├── image2.jpgs
   │    │    └── ...
   │    ├── AdvancedAugmentation/      # Augmentation folder 2
   │    │    └── ...
@@ -83,8 +83,8 @@ dataset/
   │    └── Original/                  # Masks for original images
   │         └── ...
   ├── images_valid/                   # Validation images
-  │    ├── image1.jpg/jpeg/png
-  │    ├── image2.jpg/jpeg/png
+  │    ├── image1.jpgs
+  │    ├── image2.jpgs
   │    └── ...
   └── labels_valid/                   # Validation masks
        ├── image1.tiff
@@ -94,8 +94,7 @@ dataset/
 
 **Important Notes:**
 - The dataset loader matches images and masks by their filename stems (without extension)
-- Supported image formats: .jpg, .png, .jpeg
-- Supported mask formats: .tiff
+- Supported image formats: .jpg, .png, supported mask formats: .tiff
 
 ## Training
 

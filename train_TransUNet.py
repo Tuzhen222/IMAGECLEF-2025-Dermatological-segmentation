@@ -189,7 +189,8 @@ def load_transunet_model(vit_name='R50-ViT-B_16',
     pretrained_path = os.path.join(pretrained_dir, pretrained_map[vit_name])
     if os.path.exists(pretrained_path):
         weights = np.load(pretrained_path)
-        model.load_from(weights)        print(f"Loaded pretrained weights from {pretrained_path}")
+        model.load_from(weights)        
+        print(f"Loaded pretrained weights from {pretrained_path}")
     else:
         print(f"[Warning] Pretrained file not found at {pretrained_path}. Model will train from scratch.")
     return model
