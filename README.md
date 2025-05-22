@@ -1,6 +1,9 @@
-# IMAGECLEF-MEDIQA-MAGIC-2025-Dermatological-segmentation
+# 🩺 IMAGECLEF-MEDIQA-MAGIC 2025 – Dermatological Segmentation (Subtask 1)
 
-This repository contains code for training and evaluating TransUNet models for medical image segmentation. TransUNet combines CNN features with the self-attention mechanism of Vision Transformers (ViT) to achieve excellent performance on segmentation tasks.
+This repository contains our implementation for the **ImageCLEFmed MEDIQA-MAGIC 2025** challenge, specifically focusing on **Subtask 1: Segmentation of Dermatological Problem Regions**.
+
+The objective of this subtask is to develop automated systems capable of accurately identifying and segmenting regions affected by dermatological conditions in medical images. This is a crucial step toward improving computer-aided diagnosis and supporting clinical decision-making in dermatology.
+
 
 ## Table of Contents
 1. [Installation](#installation)
