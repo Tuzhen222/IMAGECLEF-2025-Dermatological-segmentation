@@ -44,6 +44,10 @@ pip install -r TransUNet/requirements.txt
 ```
 
 ### Step 5: Download pretrained models
+You can download the official pretrained weights for ViT models directly from Google Cloud:
+🔗 [Official Google Cloud Storage](https://console.cloud.google.com/storage/browser/vit_models?inv=1&invt=AbyCpw)
+Alternatively, for convenience, the weights have also been mirrored to Google Drive:
+🔗 [Google Drive Mirror](https://drive.google.com/file/d/1mGhBIDcyollAEz0JMafXUO5zO3hErq4H/view?usp=sharing)
 ```bash
 # Install gdown if not installed yet
 pip install gdown
