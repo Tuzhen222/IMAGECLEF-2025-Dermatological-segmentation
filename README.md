@@ -19,15 +19,22 @@ This repository contains our solution for the **ImageCLEF 2025 Dermatological Se
 
 ## 📋 Table of Contents
 
-1. [Installation](#installation)
-2. [Dataset Preparation](#data-preparation)
-3. [Training](#training)
+1. [Installation](#-installation)
+2. [Dataset Preparation](#-dataset-preparation)
+3. [Training](#-training)
    - [Training TransUNet](#training-transunet)
    - [Training MedSAM](#training-medsam)
-4. [Prediction](#prediction)
-5. [Model Architecture](#model-architecture)
-6. [Results and Evaluation](#results-and-evaluation)
-7. [Best Practices](#best-practices)
+4. [Model Architecture](#-model-architecture)
+   - [TransUNet](#transunet)
+   - [MedSAM](#medsam)
+5. [Training Parameters](#training-parameters)
+6. [Output](#output)
+7. [Prediction](#-prediction)
+8. [Results and Evaluation](#-results-and-evaluation)
+9. [Tips for Optimal Results](#tips-for-optimal-results)
+10. [Citation](#-citation)
+11. [Contact](#-contact)
+12. [Acknowledgments](#-acknowledgments)
 
 ## 🔧 Installation
 
@@ -403,6 +410,7 @@ Visual comparisons between our model predictions and ground truth masks demonstr
 | Dermatofibroma | 0.875 | 0.790 | 0.875 |
 
 
+
 ## 📄 Citation
 
 If you use our code in your research, please cite:
@@ -434,18 +442,6 @@ For the models we've implemented, please also cite:
 }
 ```
 
-## 🔬 Conclusion
-
-This repository provides a comprehensive implementation for dermatological image segmentation using state-of-the-art deep learning models. Our framework is designed to be modular, extensible, and easy to use, allowing for rapid experimentation and deployment of dermatological segmentation systems.
-
-Key strengths of our approach include:
-
-1. **Multiple Complementary Models**: TransUNet and MedSAM provide different segmentation approaches, allowing for robust ensemble results
-2. **Comprehensive Data Augmentation**: Enhanced training data diversity to improve model generalization
-3. **Flexible Training Pipeline**: Easy customization for different dermatological datasets and conditions
-4. **Optimized for Performance**: Mixed precision training and efficient inference code
-
-We hope this work contributes to advancing computer-aided diagnosis in dermatology and supports medical professionals in accurately identifying skin lesions.
 
 ## 📬 Contact
 
