@@ -28,7 +28,6 @@ This repository contains our solution for the **ImageCLEF 2025 Dermatological Se
 5. [Model Architecture](#model-architecture)
 6. [Results and Evaluation](#results-and-evaluation)
 7. [Best Practices](#best-practices)
-8. [Troubleshooting](#troubleshooting)
 
 ## 🔧 Installation
 
@@ -185,69 +184,61 @@ Basic training command:
 
 ```bash
 python train_TransUNet.py \
-  --train_image_dirs "path/to/images_train/Original" \
-  --train_mask_dirs "path/to/labels_train/Original" \
-  --val_image_dirs "path/to/images_valid" \
-  --val_mask_dirs "path/to/labels_valid" \
+  --train_images_path "path/to/images_train" \
+  --train_labels_path "path/to/labels_train" \
+  --val_images_path "path/to/images_valid" \
+  --val_labels_path "path/to/labels_valid" \
+  --folder_group "original" \
   --output_dir "output_transunet" \
-  --num_epochs 100 \
+  --epochs 100 \
   --batch_size 8 \
-  --vit_name "R50-ViT-B_16" \
+  --model_name "R50-ViT-B_16" \
   --img_size 224 \
-  --use_amp
+  --use_augmentation
 ```
 
-For using multiple augmentation folders:
+For using multiple specific augmentation groups:
 
 ```bash
+# Use geometric augmentations (horizontal/vertical flips, rotations, etc.)
 python train_TransUNet.py \
-  --train_image_dirs "path/to/images_train/Original" "path/to/images_train/Augmented" \
-  --train_mask_dirs "path/to/labels_train/Original" "path/to/labels_train/Augmented" \
-  --val_image_dirs "path/to/images_valid" \
-  --val_mask_dirs "path/to/labels_valid" \
-  --output_dir "output_transunet_augmented" \
-  --num_epochs 100 \
+  --train_images_path "path/to/images_train" \
+  --train_labels_path "path/to/labels_train" \
+  --val_images_path "path/to/images_valid" \
+  --val_labels_path "path/to/labels_valid" \
+  --folder_group "geometric" \
+  --output_dir "output_transunet_geometric_aug" \
+  --epochs 100 \
   --batch_size 8 \
-  --vit_name "R50-ViT-B_16" \
+  --model_name "R50-ViT-B_16" \
   --img_size 224 \
-  --use_amp
+  --use_augmentation
 ```
 
-Using all augmentation folders with PowerShell on Windows:
+Using predefined folder groups:
 
-```powershell
-# Create an array of folder names
-$folders = @("AdditiveNoise", "AdvancedAugmentation", "HorizontalFlip", "VerticalFlip", 
-             "RandomRotate90", "ElasticTransform", "GridDistortion", "Original")
-
-# Base paths
-$baseImgPath = "path\to\images_train"
-$baseMaskPath = "path\to\labels_train"
-
-# Construct command arguments
-$imgDirs = @()
-$maskDirs = @()
-
-foreach ($folder in $folders) {
-    $imgDirs += "`"$baseImgPath\$folder`""
-    $maskDirs += "`"$baseMaskPath\$folder`""
-}
-
-# Create the command string
-$imgDirsStr = $imgDirs -join " "
-$maskDirsStr = $maskDirs -join " "
-
-# Execute the command
-python train_TransUNet.py `
-  --train_image_dirs $imgDirsStr `
-  --train_mask_dirs $maskDirsStr `
-  --val_image_dirs "path\to\images_valid" `
-  --val_mask_dirs "path\to\labels_valid" `
-  --output_dir "output_all_aug" `
-  --num_epochs 100 `
-  --batch_size 8 `
-  --use_amp
+```bash
+# The script supports predefined folder groups for simpler training with multiple augmentations
+python train_TransUNet.py \
+  --train_images_path "path/to/images_train" \
+  --train_labels_path "path/to/labels_train" \
+  --val_images_path "path/to/images_valid" \
+  --val_labels_path "path/to/labels_valid" \
+  --folder_group "all" \
+  --output_dir "output_all_aug" \
+  --model_name "R50-ViT-B_16" \
+  --epochs 100 \
+  --batch_size 8
 ```
+
+Available folder group options:
+- `all`: Uses all available augmentation folders
+- `geometric`: Focuses on geometric transformations (flips, rotations, etc.)
+- `photometric`: Uses brightness/contrast augmentations
+- `noise_artifact`: Includes noise-based augmentations
+- `original`: Uses only original images (no augmentations)
+
+This approach eliminates the need for manually listing all augmentation folders.
 
 ### Training MedSAM
 
@@ -287,17 +278,19 @@ Available model configurations:
 | ViT-L_16 | ViT-Large with 16×16 patches | Large | Slow | High |
 | ViT-L_32 | ViT-Large with 32×32 patches | Large | Medium | Medium |
 
-Choose the appropriate model with the `--vit_name` parameter:
+Choose the appropriate model with the `--model_name` parameter:
 
 ```bash
 python train_TransUNet.py \
-  --train_image_dirs "path/to/images_train/Original" \
-  --train_mask_dirs "path/to/labels_train/Original" \
-  --val_image_dirs "path/to/images_valid" \
-  --val_mask_dirs "path/to/labels_valid" \
-  --vit_name "ViT-L_16" \
+  --train_images_path "path/to/images_train" \
+  --train_labels_path "path/to/labels_train" \
+  --val_images_path "path/to/images_valid" \
+  --val_labels_path "path/to/labels_valid" \
+  --folder_group "original" \
+  --model_name "ViT-L_16" \
   --output_dir "output_vitl16" \
-  --use_amp
+  --epochs 100 \
+  --learning_rate 1e-5
 ```
 
 ### MedSAM
@@ -319,24 +312,25 @@ Model types available:
 The script provides many parameters to customize your training:
 
 ### Data & Model Parameters
-- `--train_image_dirs`: List of directories containing training images (required)
-- `--train_mask_dirs`: List of directories containing training masks (required)
-- `--val_image_dirs`: List of directories containing validation images (required)
-- `--val_mask_dirs`: List of directories containing validation masks (required)
-- `--vit_name`: ViT model name (default: 'R50-ViT-B_16')
+- `--train_images_path`: Path to training images directory (required)
+- `--train_labels_path`: Path to training labels directory (required)
+- `--val_images_path`: Path to validation images directory (required)
+- `--val_labels_path`: Path to validation labels directory (required)
+- `--folder_group`: Group of augmentation folders to use ['all', 'geometric', 'photometric', 'noise_artifact', 'original'] (default: 'all')
+- `--model_name`: TransUNet model variant ['R50-ViT-B_16', 'ViT-B_16', 'ViT-B_32', 'ViT-L_16', 'ViT-L_32'] (default: 'R50-ViT-B_16')
 - `--img_size`: Input image size (default: 224)
-- `--n_classes`: Number of output classes (default: 1 for binary segmentation)
-- `--vit_patches_size`: Size of ViT patches (default: 16)
-- `--pretrained_dir`: Directory containing pretrained weights (default: 'pretrained_models')
+- `--num_classes`: Number of output classes (default: 1 for binary segmentation)
+- `--pretrained_dir`: Directory containing pretrained model weights (default: 'pretrained_models')
 
 ### Training Parameters
 - `--batch_size`: Batch size for training and validation (default: 8)
-- `--num_epochs`: Number of training epochs (default: 10)
-- `--lr`: Learning rate (default: 1e-4)
-- `--weight_decay`: Weight decay for optimizer (default: 1e-3)
-- `--patience`: Patience for early stopping (default: 10)
+- `--epochs`: Number of training epochs (default: 50)
+- `--learning_rate`: Initial learning rate (default: 1e-5)
+- `--weight_decay`: Weight decay for AdamW optimizer (default: 1e-2)
+- `--use_augmentation`: Enable data augmentation during training (flag)
 - `--scheduler_patience`: Patience for learning rate scheduler (default: 5)
-- `--scheduler_factor`: Factor for learning rate scheduler (default: 0.5)
+- `--scheduler_factor`: Factor to reduce learning rate (default: 0.5)
+- `--early_stopping_patience`: Patience for early stopping (default: 10)
 
 ### Output Parameters
 - `--output_dir`: Output directory for saving models and visualizations (default: 'output')
@@ -363,33 +357,6 @@ After training, the script produces the following outputs in the specified outpu
    - Notification when a new best model is saved
    - Early stopping information
 
-## Tips for Optimal Results
-
-### 1. Image Size
-- For better accuracy but slower training, try larger image sizes: `--img_size 384` or `--img_size 512`
-- For faster training but potentially less accuracy, use smaller sizes: `--img_size 224`
-
-### 2. Model Selection
-- For most tasks, `R50-ViT-B_16` provides a good balance of performance and speed
-- If you have sufficient GPU memory, `ViT-L_16` may offer improved performance
-
-### 3. Learning Rate Tuning
-- Start with the default `--lr 1e-4`
-- If training is unstable, try a lower learning rate: `--lr 5e-5`
-- If training is slow to converge, try a higher learning rate: `--lr 3e-4`
-
-### 4. Batch Size
-- Use the largest batch size that fits in your GPU memory
-- Increase batch size with `--batch_size 16` or `--batch_size 32` if possible
-- If using larger batch sizes, consider increasing the learning rate proportionally
-
-### 5. Data Augmentation
-- The dataset loader already includes some augmentations (horizontal/vertical flips, rotations)
-- Use more augmentation folders if available for better generalization
-
-### 6. Hardware Recommendations
-- A GPU with at least 8GB VRAM is recommended for training
-- Enable mixed precision training with `--use_amp` to reduce memory usage and speed up training
 
 ## 🔍 Prediction
 
@@ -408,36 +375,7 @@ python predict_TransUNet.py `
   --device "cuda:0"
 ```
 
-### Ensemble Prediction
 
-For better performance, you can combine multiple models:
-
-```bash
-python predict_TransUNet.py `
-  --image_dir "path\to\test_images" `
-  --save_dir "path\to\ensemble_predictions" `
-  --checkpoint_paths "output_transunet\TransUNet_best_model.pth" "output_vitl16\TransUNet_best_model.pth" `
-  --vit_names "R50-ViT-B_16" "ViT-L_16" `
-  --vit_patches_sizes 16 16 `
-  --img_size 224 `
-  --device "cuda:0"
-```
-
-### Batch Prediction for Large Datasets
-
-For large datasets, use batch processing:
-
-```bash
-python predict_TransUNet.py `
-  --image_dir "path\to\test_images" `
-  --save_dir "path\to\predictions" `
-  --checkpoint_paths "output_transunet\TransUNet_best_model.pth" `
-  --vit_names "R50-ViT-B_16" `
-  --vit_patches_sizes 16 `
-  --img_size 224 `
-  --batch_size 16 `
-  --device "cuda:0"
-```
 
 ## 📈 Results and Evaluation
 
@@ -464,28 +402,6 @@ Visual comparisons between our model predictions and ground truth masks demonstr
 | Nevus | 0.905 | 0.830 | 0.905 |
 | Dermatofibroma | 0.875 | 0.790 | 0.875 |
 
-## Troubleshooting
-
-### CUDA Out of Memory
-If you encounter "CUDA out of memory" errors:
-1. Reduce batch size with `--batch_size 4` or even lower
-2. Try a smaller model, e.g., `--vit_name "ViT-B_32"`
-3. Reduce image size with `--img_size 192`
-4. Enable mixed precision training with `--use_amp` if not already enabled
-
-### Poor Performance
-If model performance is unsatisfactory:
-1. Try training for more epochs: `--num_epochs 20`
-2. Use a larger model: `--vit_name "ViT-L_16"`
-3. Reduce learning rate: `--lr 5e-5`
-4. Increase weight decay for better regularization: `--weight_decay 5e-3`
-5. Ensure your data is properly preprocessed and normalized
-
-### Loading Pretrained Weights
-If you have issues loading pretrained weights:
-1. Check that the `pretrained_models` directory contains the correct `.npz` files
-2. If using a custom directory, specify it with `--pretrained_dir "path/to/pretrained"`
-3. If weights are missing, try downloading them again with gdown
 
 ## 📄 Citation
 
@@ -548,8 +464,3 @@ For any questions or suggestions about this project, please feel free to contact
 
 ---
 
-<p align="center">
-  <img src="https://via.placeholder.com/150?text=Your+Logo" alt="Your Logo">
-  <br>
-  <em>Advancing medical image analysis with deep learning</em>
-</p>
