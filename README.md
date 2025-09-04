@@ -442,16 +442,6 @@ For the models we've implemented, please also cite:
 }
 ```
 
-
-## 📬 Contact
-
-For any questions or suggestions about this project, please feel free to contact:
-
-- **Your Name** - your.email@example.com
-- **Team member 2** - team.member2@example.com
-
----
-
 ## 🙏 Acknowledgments
 
 - The [TransUNet](https://github.com/Beckschen/TransUNet) team for their implementation
