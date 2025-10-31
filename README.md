@@ -416,11 +416,10 @@ Visual comparisons between our model predictions and ground truth masks demonstr
 If you use our code in your research, please cite:
 
 ```bibtex
-@inproceedings{your-team-2025,
-  title={{Advanced Dermatological Image Segmentation System for ImageCLEF 2025}},
-  author={Your Team},
-  booktitle={Working Notes of CLEF 2025},
-  year={2025}
+@inproceedings{AnastasiaAM,
+  title  = {Anastasia at MEDIQA-MAGIC 2025: A Multi-Approach Segmentation Framework with Extensive Augmentation},
+  author = {Tung Thanh Le and Tri Minh Ngo and Khoi Dinh Nguyen and Trung Hieu Dang and Trong Hoang Pham and Thien B. Nguyen-Tat},
+  url    = {https://api.semanticscholar.org/CorpusID:282150588}
 }
 ```
 
